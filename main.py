@@ -1,13 +1,13 @@
 from dependance import *
 effter()
 
-info = '''info sur vos package
-1 - lister tout mes packages
-2 - rechercher un de mes package 
-3 - supprimer un package
-0 - quitter
+info = f'''{"info sur vos package":-^40}
+| {"1 - lister tout mes packages": <37}|
+| {"2 - rechercher un de mes package": <37}|
+| {"3 - supprimer un package": <37}|
+| {"0 - quitter": <37}|
+{"T_xOx_T":-^40}
 -> '''
-
 print('chargements de la liste des packages ...')
 package = [i.split('==')  for i in cmds('pip freeze').split('\n')]
 
@@ -32,17 +32,17 @@ while choix != 0:
         if len(data):
             print('package trouver')
             if len(data) == 1:
-                show_package(data[0])
+                show_package(data[0][0])
                 continue
             for i in range(len(data)):
-                print(f'{i + 1} - {data[i]}')
+                print(f'{i + 1} - {data[i][0]}')
             
             c = verch(
                 info='entrer le numero d\'un package pour plus d\'information sur celui-ci (q pour quitter) : ',
                 erro=f'valeur innatendu!\n{barre}',deb=1, fin=i+1,exp=['q']
             )
             if c != 'q':
-                show_package(data[c-1])
+                show_package(data[c-1][0])
             else : continue
             
         else : print(f'aucun package trouver avec ce nom dans votre systéme\n{barre}')
@@ -57,16 +57,18 @@ while choix != 0:
             if len(data) >= 2:
                 print('nous avons trouver plusieur packages')
                 for i in range(len(data)):
-                    print(f'{i + 1} - {data[i]}')
+                    print(f'{i + 1} - {data[i][0]}')
                 c = choice('entrer les numéro des packages a supprimer (ex: 1,2,5 ) : ').split(',')
                 for i in c:
                     try:
-                        # cmds(f'pip uninstall -y {data[int(i)]}')
-                        print(f'delete {data[int(i) - 1]} [ok] ')
+                        del_package(data[int(i) - 1][0])
+                        package.pop(data[int(i) - 1][1])
                     except: pass
             else :
-                # cmds(f'pip uninstall -y {data[0]}')
-                print(f'delete {data[0]} [ok] ')
-           
-        else : print(f'aucun package trouver avec ce nom dans votre systéme\n{barre}')
+                del_package(data[0][0])
+                package.pop(data[0][1])
+            print(package)
+
+        else : 
+            print(f'aucun package trouver avec ce nom dans votre systéme\n{barre}')
         input()

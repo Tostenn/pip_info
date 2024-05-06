@@ -12,7 +12,7 @@ def cmds(cmd:str, code:bool=False) -> str:
     if code: return cmd.returncode
     return cmd.stdout.strip()
 
-def ver_t(t1,t2):
+def ver_t(t1,t2) -> bool:
     '''fonction vérifie si deux variable on le même type'''
     return type(t1) == type(t2)
 
@@ -51,7 +51,7 @@ def verch(info,erro = 'valeur innatendu!', deb = 0,fin = 3,arret=True,exp=[]):
             if arret <= 0:veri = False 
     return choix
 
-barre = f"{'-':-^50}"
+barre = f"{'-':-^40}"
 
 def show(_):
     '''afficher personnaliser avec des --'''
@@ -60,9 +60,9 @@ def show(_):
 def search(_:str, item:list):
     '''recherche dans une liste un element'''
     data = []
-    for i in item:
-        if _ in i[0]:
-            data.append(i[0])
+    for i in range(len(item)):
+        if _ in item[i][0]:
+            data.append([item[i][0],i])
     return data
 
 def show_package(_):
@@ -79,3 +79,8 @@ def choice(info:str, error:str = f'valeur innatendu!\n{barre}') -> str:
         c = input(info)
         if not c: print(error)
     return c
+
+def del_package(_:str) -> None:
+    '''supprime un package'''
+    # cmds(f'pip uninstall -y {_}')
+    print(f'delete {_} [ok] ')
